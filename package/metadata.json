@@ -1,0 +1,20 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "pauli.k.huttunen@gmail.com",
+                "Name": "Pauli Huttunen"
+            }
+        ],
+        "Category": "Utilities",
+        "Description": "KDE Plasmoid for controlling Elgato devices.",
+        "Icon": "applications-utilities",
+        "Id": "com.github.whiteeyedoll.plasmoid-elgato-control",
+        "Name": "Elgato Control",
+        "Version": "1",
+        "Website": "https://github.com/WhiteEyeDoll/plasmoid-elgato-control"
+    },
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-MainScript": "ui/main.qml",
+    "KPackageStructure": "Plasma/Applet"
+}
