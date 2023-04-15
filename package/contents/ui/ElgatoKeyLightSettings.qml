@@ -9,18 +9,22 @@ Item {
     id: settings
 
     property string ip_address
+
     property int on
     property int brightness
     property int temperature
+
+    property string productName
 
     Timer {
         interval: 2000
         running: true
         repeat: true
-        onTriggered: getLights()
+        onTriggered: {
+            getAccessoryInfo();
+            getLights();
+        }
     }
-
-    Component.onCompleted: getLights()
 
     function getLights() {
         var xhr = new XMLHttpRequest();
@@ -65,5 +69,40 @@ Item {
 
         xhr.open("PUT", `http://${this.ip_address}:9123/elgato/lights`);
         xhr.send(JSON.stringify(json));
+    }
+
+    function identify() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+                print('HEADERS_RECEIVED');
+            } else if (xhr.readyState === XMLHttpRequest.DONE) {
+                print('DONE')
+            }
+        }
+
+        xhr.open("POST", `http://${this.ip_address}:9123/elgato/identify`);
+        xhr.send();
+    }
+
+    function getAccessoryInfo() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
+                print('HEADERS_RECEIVED');
+            } else if (xhr.readyState === XMLHttpRequest.DONE) {
+                var jsonResponse = JSON.parse(xhr.responseText);
+
+                settings.productName = jsonResponse.productName;
+            }
+        }
+
+        xhr.open("GET", `http://${this.ip_address}:9123/elgato/accessory-info`);
+        xhr.send();
+    }
+
+    Component.onCompleted: {
+        getAccessoryInfo();
+        getLights();
     }
 }

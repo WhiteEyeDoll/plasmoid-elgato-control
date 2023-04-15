@@ -15,12 +15,26 @@ ColumnLayout {
             ip_address: controls.ip_address
         }
 
-        PlasmaComponents.Switch {
-            id: onSwitch
-            text: settings.ip_address
-            checked: settings.on
-            onCheckedChanged: settings.setLights({on: checked})
+        Text {
+            id: productName
+            text: settings.productName
         }
+
+        RowLayout {
+
+            PlasmaComponents.Switch {
+                id: onSwitch
+                text: settings.ip_address
+                checked: settings.on
+                onCheckedChanged: settings.setLights({on: checked})
+            }
+
+            PlasmaComponents.Button {
+                id: identifyButton
+                onClicked: settings.identify()
+            }
+        }
+
 
         PlasmaComponents.Slider {
             id: temperatureSlider
