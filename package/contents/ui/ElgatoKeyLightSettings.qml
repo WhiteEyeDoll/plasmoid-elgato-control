@@ -6,7 +6,7 @@ import org.kde.plasma.plasmoid 2.0
 
 Item {
 
-    id: api
+    id: settings
 
     property string ip_address
     property int on
@@ -17,28 +17,23 @@ Item {
         interval: 2000
         running: true
         repeat: true
-        onTriggered: {
-            getLight()
-            console.log("TEMP: ", temperature)
-        }
+        onTriggered: getLights()
     }
 
-    Component.onCompleted: {
-            getLight()
-    }
+    Component.onCompleted: getLights()
 
-    function getLight() {
+    function getLights() {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
                 print('HEADERS_RECEIVED');
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 var jsonResponse = JSON.parse(xhr.responseText);
-                var settings = jsonResponse.lights[0];
+                var lights = jsonResponse.lights[0];
 
-                api.on = settings.on
-                api.brightness = settings.brightness
-                api.temperature = settings.temperature
+                settings.on = lights.on;
+                settings.brightness = lights.brightness;
+                settings.temperature = lights.temperature;
             }
         }
 
@@ -46,26 +41,25 @@ Item {
         xhr.send();
     }
 
-    function setLight(key, value) {
+    function setLights({on, brightness, temperature} = {}) {
         var xhr = new XMLHttpRequest();
 
-        var json = {
+        // Undefined values are not included by JSON.stringify()
+         var json = {
             "numberOfLights": 1,
-            "lights": [{}]
+            "lights": [{
+                "on": on,
+                "brightness": brightness,
+                "temperature": temperature
+            }]
         }
-
-        json["lights"][0][key] = value
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
                 print('HEADERS_RECEIVED');
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 var jsonResponse = JSON.parse(xhr.responseText);
-                var settings = jsonResponse.lights[0];
-
-                this.on = settings.on
-                this.brightness = settings.brightness
-                this.temperature = settings.temperature
+                var lights = jsonResponse.lights[0];
             }
         }
 

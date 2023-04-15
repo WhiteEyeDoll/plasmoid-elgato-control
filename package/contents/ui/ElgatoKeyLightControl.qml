@@ -18,10 +18,18 @@ ColumnLayout {
         PlasmaComponents.Switch {
             id: onSwitch
             text: settings.ip_address
-            checked: settings.on === 1 ? 1 : 0
-            onClicked: {
-                settings.setLight("on", checked ? 1 : 0)
-            }
+            checked: settings.on
+            onCheckedChanged: settings.setLights({on: checked})
+        }
+
+        PlasmaComponents.Slider {
+            id: temperatureSlider
+            Layout.fillWidth: true
+            value: settings.temperature
+            from: 143
+            to: 344
+            stepSize: 1
+            onMoved: settings.setLights({temperature: value})
         }
 
         PlasmaComponents.Slider {
@@ -31,21 +39,6 @@ ColumnLayout {
             from: 0
             to: 100
             stepSize: 1
-            onMoved: {
-                settings.setLight("brightness", value)
-            }
-        }
-
-
-        PlasmaComponents.Slider {
-            id: temperatureSlider
-            Layout.fillWidth: true
-            value: settings.temperature
-            from: 143
-            to: 344
-            stepSize: 1
-            onMoved: {
-                settings.setLight("temperature", value)
-            }
+            onMoved: settings.setLights({brightness: value})
         }
 }
