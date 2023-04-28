@@ -16,6 +16,7 @@ ColumnLayout {
 
         PlasmaComponents.Button {
             id: add
+            text: "Add"
             onClicked: {
                 var ip = input.text
                 input.text = ""
@@ -27,10 +28,9 @@ ColumnLayout {
     function createControl(ip) {
         var component = Qt.createComponent("ElgatoKeyLightControl.qml");
         if (component.status == Component.Ready) {
-            var controlGroup = component.createObject(app);
-            controlGroup.ip_address = ip;
+            var controlGroup = component.createObject(app, { ip_address: ip});
         }
-        if (controls == null) {
+        if (controlGroup == null) {
             // Error Handling
             console.log("Error creating object");
         }
