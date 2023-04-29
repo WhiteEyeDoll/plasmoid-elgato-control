@@ -32,7 +32,7 @@ Item {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                print('HEADERS_RECEIVED');
+                console.log('HEADERS_RECEIVED');
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 var jsonResponse = JSON.parse(xhr.responseText);
                 var lights = jsonResponse.lights[0];
@@ -75,7 +75,7 @@ Item {
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                    print('HEADERS_RECEIVED');
+                    console.log('HEADERS_RECEIVED');
                 } else if (xhr.readyState === XMLHttpRequest.DONE) {
                     var jsonResponse = JSON.parse(xhr.responseText);
                 }
@@ -90,9 +90,9 @@ Item {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                print('HEADERS_RECEIVED');
+                console.log('HEADERS_RECEIVED');
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
-                print('DONE')
+                console.log('DONE')
             }
         }
 
@@ -104,7 +104,7 @@ Item {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                print('HEADERS_RECEIVED');
+                console.log('HEADERS_RECEIVED');
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 var jsonResponse = JSON.parse(xhr.responseText);
 
@@ -116,7 +116,7 @@ Item {
         xhr.send();
     }
 
-    function setAccessoryInfo({displayName}) {
+    function setAccessoryInfo({displayName} = {}) {
 
         var xhr = new XMLHttpRequest();
 
@@ -126,7 +126,7 @@ Item {
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.HEADERS_RECEIVED) {
-                print('HEADERS_RECEIVED');
+                console.log('HEADERS_RECEIVED');
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 var jsonResponse = JSON.parse(xhr.responseText);
             }
