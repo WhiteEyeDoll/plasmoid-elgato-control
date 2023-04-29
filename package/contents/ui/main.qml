@@ -16,18 +16,18 @@ ColumnLayout {
             id: add
             text: "Add"
             onClicked: {
-                var ip = input.text;
+                var ip_address = input.text;
                 input.text = "";
-                app.createControl(ip);
+                app.createControl(ip_address);
             }
         }
     }
 
-    function createControl(ip) {
+    function createControl(ip_address) {
         var component = Qt.createComponent("ElgatoKeyLightControl.qml");
         if (component.status == Component.Ready) {
             var controlGroup = component.createObject(app, {
-                    "ip_address": ip
+                    "ip_address": ip_address
                 });
         }
         if (controlGroup == null) {
