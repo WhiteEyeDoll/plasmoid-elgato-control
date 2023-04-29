@@ -16,7 +16,7 @@ ColumnLayout {
 
     PlasmaComponents.Label {
         id: productName
-        text: settings.productName
+        text: settings.displayName
     }
 
     RowLayout {

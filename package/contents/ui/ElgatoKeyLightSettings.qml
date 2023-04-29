@@ -9,13 +9,15 @@ Item {
 
     id: settings
 
-    property string ip_address
+    required property string ip_address
+    readonly property string baseUrl: `http://${settings.ip_address}:9123`
 
     property int on
     property int brightness
     property int temperature
 
-    property string productName
+    property string displayName
+
 
     Timer {
         id: refresh
@@ -43,7 +45,7 @@ Item {
             }
         }
 
-        xhr.open("GET", `http://${this.ip_address}:9123/elgato/lights`);
+        xhr.open("GET", `${settings.baseUrl}/elgato/lights`);
         xhr.send();
     }
 
@@ -81,7 +83,7 @@ Item {
                 }
          }
 
-            xhr.open("PUT", `http://${this.ip_address}:9123/elgato/lights`);
+            xhr.open("PUT", `${settings.baseUrl}/elgato/lights`);
             xhr.send(JSON.stringify(json));
         }
     }
@@ -96,7 +98,7 @@ Item {
             }
         }
 
-        xhr.open("POST", `http://${this.ip_address}:9123/elgato/identify`);
+        xhr.open("POST", `${settings.baseUrl}/elgato/identify`);
         xhr.send();
     }
 
@@ -108,11 +110,11 @@ Item {
             } else if (xhr.readyState === XMLHttpRequest.DONE) {
                 var jsonResponse = JSON.parse(xhr.responseText);
 
-                settings.productName = jsonResponse.displayName;
+                settings.displayName = jsonResponse.displayName;
             }
         }
 
-        xhr.open("GET", `http://${this.ip_address}:9123/elgato/accessory-info`);
+        xhr.open("GET", `${settings.baseUrl}/elgato/accessory-info`);
         xhr.send();
     }
 
@@ -132,7 +134,7 @@ Item {
             }
         }
 
-        xhr.open("PUT", `http://${this.ip_address}:9123/elgato/accessory-info`);
+        xhr.open("PUT", `${settings.baseUrl}/elgato/accessory-info`);
         xhr.send(JSON.stringify(json));
     }
 
