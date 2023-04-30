@@ -9,8 +9,9 @@ import "utils.js" as Utils
 ColumnLayout {
     id: settings
 
-    required property string ip_address
+    Layout.fillWidth: true
 
+    required property string ip_address
     readonly property string baseUrl: `http://${settings.ip_address}:9123`
 
     property int on

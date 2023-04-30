@@ -3,36 +3,35 @@ import QtQuick.Layouts 1.15
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents
 import org.kde.plasma.plasmoid 2.0
+import QtQml.Models 2.15
 
 ColumnLayout {
     id: app
 
-    RowLayout {
-        PlasmaComponents.TextField {
-            id: input
-        }
+    Layout.minimumWidth: PlasmaCore.Units.gridUnit * 14
 
-        PlasmaComponents.Button {
-            id: add
-            text: "Add"
-            onClicked: {
-                var ip_address = input.text;
-                input.text = "";
-                app.createControl(ip_address);
-            }
+    ObjectModel {
+        id: deviceListModel
+        property string deviceList: plasmoid.configuration.deviceList
+        onDeviceListChanged: {
+            deviceListModel.clear();
+            var component = Qt.createComponent("ElgatoKeyLightControl.qml");
+            var deviceArray = plasmoid.configuration.deviceList.split(",");
+            deviceArray.forEach(device => {
+                    if (component.status == Component.Ready) {
+                        console.log("Adding device: " + device);
+                        deviceListModel.append(component.createObject(deviceListModel, {
+                                    "ip_address": `${device}`
+                                }));
+                    }
+                });
         }
     }
 
-    function createControl(ip_address) {
-        var component = Qt.createComponent("ElgatoKeyLightControl.qml");
-        if (component.status == Component.Ready) {
-            var controlGroup = component.createObject(app, {
-                    "ip_address": ip_address
-                });
-        }
-        if (controlGroup == null) {
-            // Error Handling
-            console.log("Error creating object");
-        }
+    ListView {
+        id: deviceList
+        Layout.fillWidth: true
+        implicitHeight: contentHeight
+        model: deviceListModel
     }
 }
